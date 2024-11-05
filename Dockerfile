@@ -1,15 +1,15 @@
 # Usa la imagen base de Gitpod con soporte para Python y Jupyter
 FROM gitpod/workspace-full:latest
 
-# Instala Miniconda
+# Instala Miniconda en el directorio del usuario
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh && \
-    bash /tmp/miniconda.sh -b -p /opt/conda && \
+    bash /tmp/miniconda.sh -b -p /home/gitpod/miniconda && \
     rm /tmp/miniconda.sh && \
-    /opt/conda/bin/conda init bash && \
-    /opt/conda/bin/conda config --set auto_activate_base false
+    /home/gitpod/miniconda/bin/conda init bash && \
+    /home/gitpod/miniconda/bin/conda config --set auto_activate_base false
 
 # Añade Miniconda al PATH
-ENV PATH="/opt/conda/bin:$PATH"
+ENV PATH="/home/gitpod/miniconda/bin:$PATH"
 
 # Instala Cling para C++
 RUN sudo apt-get update && \
