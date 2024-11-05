@@ -1,0 +1,10 @@
+image:
+  file: Dockerfile
+
+tasks:
+  - name: Start Jupyter Notebook
+    command: jupyter notebook --ip=0.0.0.0 --no-browser --allow-root
+
+ports:
+  - port: 8888
+    onOpen: open-preview
