@@ -1,43 +1,38 @@
-# Use una imagen base de Ubuntu
-FROM ubuntu:latest
+# Use Arch Linux as the base image
+FROM archlinux:latest
 
-# Actualiza los paquetes del sistema
-RUN apt-get update && apt-get upgrade -y
+# Update the package lists and install necessary dependencies
+RUN pacman -Syyu --noconfirm \
+    && pacman -S --noconfirm \
+        wget \
+        base-devel \
+        git \
+        cmake \
+        ncurses \
+        xz \
+        tk \
+        libffi \
+        lzma \
+        curl \
+        ca-certificates \
+        glib2 \
+        gtk2 \
+        atlas-lapack \
+        gfortran \
+        openblas \
+        opencv \
+        python3 \
+        python3-pip
 
-# Instala los paquetes necesarios
-RUN apt-get install -y \
-    wget \
-    build-essential \
-    software-properties-common \
-    git \
-    cmake \
-    libncurses5-dev \
-    libncursesw5-dev \
-    xz-utils \
-    tk-dev \
-    libffi-dev \
-    liblzma-dev \
-    curl \
-    ca-certificates \
-    libgl1-mesa-glx \
-    libglib2.0-0 \
-    libgtk2.0-dev \
-    libatlas-base-dev \
-    gfortran \
-    libopenblas-dev \
-    libopencv-dev \
-    python3-dev \
-    python3-pip
-
-# Instala Miniconda
+# Install Miniconda
 RUN curl -sL https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -o miniconda.sh \
     && bash miniconda.sh -b -p /opt/conda \
     && rm miniconda.sh \
     && /opt/conda/bin/conda init
 
-# Instala el kernel de C++ para Jupyter Notebook
+# Install the C++ kernel for Jupyter Notebook
 RUN pip install --no-cache-dir clingkernel \
     && clingkernel install
 
-# Establecer el punto de entrada
+# Set the entry point
 CMD [ "/opt/conda/bin/jupyter", "notebook", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root" ]
